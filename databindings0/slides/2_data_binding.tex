@@ -1,0 +1,11 @@
+% vim: expandtab tabstop=2 shiftwidth=2
+\begin{frame}[fragile]{Doing the actual data binding}
+  \begin{lstlisting}[language=Java]
+    protected void onCreate(Bundle savedInstanceState) {
+      super.onCreate(savedInstanceState);
+      BindingLayoutBinding binding = DataBindingUtil
+          .setContentView(this, R.layout.binding_layout);
+      binding.setData(data);
+    }
+  \end{lstlisting}
+\end{frame}

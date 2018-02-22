@@ -1,0 +1,31 @@
+% vim: expandtab tabstop=2 shiftwidth=2
+\begin{frame}[fragile]{Android Data Binding variable}
+Create the view model containing all bindable fields
+
+\begin{onlyenv}<1|handout:O>
+  \begin{lstlisting}[language=Java]
+    public class Data {
+    }
+  \end{lstlisting}
+\end{onlyenv}
+\begin{onlyenv}<2|handout:O>
+  \begin{lstlisting}[language=Java]
+    public class Data {
+      public final ObservableField<CharSequence> text
+              = new ObservableField<>();
+    }
+  \end{lstlisting}
+\end{onlyenv}
+\begin{onlyenv}<3>
+  \begin{lstlisting}[language=Java]
+    public class Data {
+      public final ObservableField<CharSequence> text
+              = new ObservableField<>();
+
+      public void onClick(View v) {
+        ...
+      }
+    }
+  \end{lstlisting}
+\end{onlyenv}
+\end{frame}

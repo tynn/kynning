@@ -1,0 +1,56 @@
+% vim: expandtab tabstop=2 shiftwidth=2
+\usepackage[ngerman]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{listings}
+
+\usetheme{Warsaw}
+\usecolortheme{seagull}
+\usefonttheme{professionalfonts}
+\useinnertheme{circles}
+\useoutertheme{shadow}
+\setbeamertemplate{navigation symbols}{}
+
+\title{The Android Data Binding Library}
+\author{Christian Schmitz}
+\date{\today}
+
+\lstset{
+  basicstyle=\scriptsize\ttfamily,
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  breaklines=true,
+  showtabs=false,
+  showstringspaces=false
+}
+
+\begin{document}
+\maketitle
+
+\section{Standard Layouts}
+\frame{\tableofcontents[currentsection]}
+\input{slides/1_usage}
+\begin{frame}[fragile]{Setting a text to a view}
+  After setting up everything else.
+
+  So let's start from the beginning ...
+\end{frame}
+\input{slides/1_simple_layout}
+\input{slides/1_simple_binding}
+%\input{slides/1_butterknife_binding}
+
+\section{Android Data Binding}
+\frame{\tableofcontents[currentsection]}
+\input{slides/2_usage}
+\input{slides/2_installation}
+\input{slides/2_data_layout}
+\input{slides/2_data_variable}
+\input{slides/2_data_binding}
+
+\section{Keep in mind}
+\frame{\tableofcontents[currentsection]}
+\input{slides/3_reference}
+\input{slides/3_operator}
+
+\end{document}

@@ -1,0 +1,13 @@
+% vim: expandtab tabstop=2 shiftwidth=2
+\begin{frame}[fragile]{Android Data Binding operators}
+\begin{itemize}
+  \item<+-> Most of Java expression language \lstinline`+ - || <= ?:` etc
+  \item<+-> Not \lstinline`this super new` though
+  \item<+-> \lstinline`data.text` to get a property like \lstinline`data.getText()`
+  \item<+-> The null coalescing operator \lstinline`data.text ?? "abc"`
+  \item[]<+-> which is equivalent to \lstinline`data.text != null ? data.text : "abc"`
+  \item<+-> \lstinline`data::onClick` to reference a method
+  \item<+-> \lstinline`collection[key]` to reference an item of a collection
+  \item<+-> \lstinline`@string/app_name` to reference a resource value
+\end{itemize}
+\end{frame}

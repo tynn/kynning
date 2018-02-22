@@ -1,0 +1,50 @@
+% vim: expandtab tabstop=2 shiftwidth=2
+\begin{frame}[fragile]{Binding a simple layout}
+\begin{onlyenv}<1|handout:O>
+  \begin{lstlisting}[language=Java]
+    private String text = "...";
+  \end{lstlisting}
+\end{onlyenv}
+\begin{onlyenv}<2|handout:O>
+  \begin{lstlisting}[language=Java]
+    private String text = "...";
+
+    public void onClick(View v) {
+      ...
+    }
+  \end{lstlisting}
+\end{onlyenv}
+\begin{onlyenv}<3|handout:O>
+  \begin{lstlisting}[language=Java]
+    private String text = "...";
+
+    public void onClick(View v) {
+      ...
+    }
+
+    protected void onCreate(Bundle savedInstanceState) {
+      super.onCreate(savedInstanceState);
+      setContentView(R.layout.simple_layout);
+      ((TextView) findViewById(R.id.text)).setText(text);
+      findViewById(R.id.button).setOnClickListener(this);
+    }
+  \end{lstlisting}
+\end{onlyenv}
+\begin{onlyenv}<4>
+  \begin{lstlisting}[language=Java]
+    private String text = "...";
+
+    public void onClick(View v) {
+      ...
+    }
+
+    protected void onCreate(Bundle savedInstanceState) {
+      super.onCreate(savedInstanceState);
+      setContentView(R.layout.simple_layout);
+      ((TextView) findViewById(R.id.text)).setText(text);
+      findViewById(R.id.button).setOnClickListener(this);
+      // additional work to observe or reset text
+    }
+  \end{lstlisting}
+\end{onlyenv}
+\end{frame}

@@ -1,0 +1,107 @@
+% vim: expandtab tabstop=2 shiftwidth=2
+\begin{frame}[fragile]{Android Data Binding layout}
+\begin{onlyenv}<1|handout:O>
+  \begin{lstlisting}[language=XML]
+  <layout>
+  </layout>
+  \end{lstlisting}
+\end{onlyenv}
+\begin{onlyenv}<2|handout:O>
+  \begin{lstlisting}[language=XML]
+  <layout>
+    <data>
+      <variable name="data" type="com.example.Data"/>
+    </data>
+  </layout>
+  \end{lstlisting}
+\end{onlyenv}
+\begin{onlyenv}<3|handout:O>
+  \begin{lstlisting}[language=XML]
+  <layout>
+    <data>
+      <variable name="data" type="com.example.Data"/>
+    </data>
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:orientation="vertical">
+       <EditText
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content" />
+       <Button
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content" />
+    </LinearLayout>
+  </layout>
+  \end{lstlisting}
+\end{onlyenv}
+\begin{onlyenv}<4|handout:O>
+  \begin{lstlisting}[language=XML]
+  <layout>
+    <data>
+      <variable name="data" type="com.example.Data"/>
+    </data>
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:orientation="vertical">
+       <EditText
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:text="@{data.text}" />
+       <Button
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content" />
+    </LinearLayout>
+  </layout>
+  \end{lstlisting}
+\end{onlyenv}
+\begin{onlyenv}<5>
+  \begin{lstlisting}[language=XML]
+  <layout>
+    <data>
+      <variable name="data" type="com.example.Data"/>
+    </data>
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:orientation="vertical">
+       <EditText
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:text="@{data.text}" />
+       <Button
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:onClick="@{data::onClick}" />
+    </LinearLayout>
+  </layout>
+  \end{lstlisting}
+\end{onlyenv}
+\begin{onlyenv}<6|handout:O>
+  \begin{lstlisting}[language=XML]
+  <layout>
+    <data>
+      <variable name="data" type="com.example.Data"/>
+    </data>
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:orientation="vertical">
+       <EditText
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:text="@={data.text}" />
+       <Button
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:onClick="@{data::onClick}" />
+    </LinearLayout>
+  </layout>
+  \end{lstlisting}
+\end{onlyenv}
+\end{frame}

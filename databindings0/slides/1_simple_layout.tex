@@ -1,0 +1,18 @@
+% vim: expandtab tabstop=2 shiftwidth=2
+\begin{frame}[fragile]{Creating a simple layout}
+  \begin{lstlisting}[language=XML]
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+     <EditText
+       android:id="@+id/text"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content" />
+     <Button
+       android:id="@+id/button"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content" />
+  </LinearLayout>
+  \end{lstlisting}
+\end{frame}

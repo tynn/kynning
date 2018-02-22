@@ -1,0 +1,227 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>The infamous DiffUtil</title>
+
+    <link rel="stylesheet" href="reveal.js/css/reveal.css">
+    <link rel="stylesheet" href="reveal.js/css/theme/black.css">
+
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="reveal.js/lib/css/zenburn.css">
+
+    <style type="text/css">
+      .reveal .controls {
+        display: none !important;
+      }
+      .reveal section img.icon {
+        background:none;
+        border:none;
+        box-shadow:none;
+        margin: 0;
+      }
+    </style>
+
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? 'reveal.js/css/print/pdf.css' : 'reveal.js/css/print/paper.css';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+
+        <section>
+          <h1>DiffUtil‽</h1>
+          <h2 class="fragment">The infamous</h2>
+        </section>
+
+        <section>
+          <h3>This is‽</h3>
+          <code class="fragment">DiffUtil</code>
+          <span class="fragment">[...] calculate the difference</span>
+          <span class="fragment">[...] output a list of update operations</span>
+          <p class="fragment">It can be used to calculate updates for a
+          <code>RecyclerView.Adapter</code>
+        </section>
+
+        <section>
+          <h3>Implementing‽</h3>
+          <ul>
+            <li class="fragment">Eugene W. Myers's difference algorithm
+            <li class="fragment">second pass on the result to detect moved items
+            <li class="fragment">uses <code>O(N)</code> space
+            <li class="fragment">has <code>O(N + D^2)</code> expected time performance
+            <li class="fragment">additional <code>O(N^2)</code> time to detect moves
+          </ul>
+          <p class="fragment">
+          <small>
+            <code>D</code> - length of edit script
+            &emsp;·&emsp;
+            <code>N</code> - number of added and removed items
+          </small>
+        </section>
+
+        <section data-background-color="#b5533c">
+          <h3>So what‽</h3>
+          <ul>
+            <li class="fragment">calculate <code>DiffUtil.DiffResult</code> on a <b>background</b> thread
+            <li class="fragment">apply it to the <code>RecyclerView</code> on the <b>main</b> thread
+            <li class="fragment">prevent concurrent changes
+          </ul>
+        </section>
+
+        <section>
+          <h3>Concurrency‽</h3>
+          <ul>
+            <li class="fragment">apply latest
+            <li class="fragment">queue updates
+            <li class="fragment">drop new data
+          </ul>
+        </section>
+
+        <section>
+          <h3>Calculate and apply‽</h3>
+          <p class="fragment"><i>on a <b>background</b> thread</i>
+          <pre class="fragment"><code class="java" data-trim data-noescape>
+            diffResult = DiffUtil.calculateDiff(callback, detectMoves);
+          </code></pre>
+          <p class="fragment"><i>on the <b>main</b> thread</i>
+          <pre class="fragment"><code class="java" data-trim data-noescape>
+            // set data to the adapter
+            diffResult.dispatchUpdatesTo(adapter);
+          </code></pre>
+        </section>
+
+        <section>
+          <h3>Callback‽</h3>
+          <ul>
+            <li class="fragment"><code>getOldListSize()</code>
+            <li class="fragment"><code>getNewListSize()</code>
+            <li class="fragment"><code>areItemsTheSame(old,new)</code>
+            <li class="fragment"><code>areContentsTheSame(old,new)</code>
+            <hr class="fragment">
+            <li class="fragment"><code>getChangePayload(old,new)</code>
+          </ul>
+          <p class="fragment">
+          <small>
+            <code>int old, new;</code>
+          </small>
+        </section>
+
+        <section>
+          <h3>Get Threading Right with DiffUtil‽</h3>
+          <a class="fragment" data-fragment-index="1" href="https://medium.com/@jonfhancock/423378e126d2">medium.com/@jonfhancock/423378e126d2</a>
+          <p class="fragment" data-fragment-index="1">by Jon F Hancock
+          <blockquote class="fragment">Use DiffUtil for rich animations in RecyclerView with a tiny amount of code</blockquote>
+        </section>
+
+        <section>
+          <h2>RxDiffUtil‽</h2>
+          <h3 class="fragment" data-fragment-index="1">Something new</h3>
+          <small class="fragment" data-fragment-index="1">
+            <a href="https://github.com/volders/RxDiffUtil" style="color:inherit">
+              <img src="img/github-white.svg" class="icon"> volders/RxDiffUtil
+            </a>
+          </small>
+        </section>
+
+        <section>
+          <h3>How to‽</h3>
+          <ul>
+            <li class="fragment">calculate diff on <code>subscribeOn()</code>
+            <li class="fragment"><code>observeOn(AndroidSchedulers.mainThread())</code>
+            <li class="fragment">use backpressure for concurrency
+          </ul>
+        </section>
+
+        <section>
+          <h3>Concurrency‽</h3>
+          <ul>
+            <li class="fragment"><code>onBackpressureLatest()</code>
+            <li class="fragment"><code>onBackpressureBuffer()</code>
+            <li class="fragment"><code>onBackpressureDrop()</code>
+            <hr class="fragment">
+            <li class="fragment"><code>Flowable</code>
+          </ul>
+        </section>
+
+        <section>
+          <h3>Calculate and apply‽</h3>
+          <pre class="fragment"><code class="java" data-trim data-noescape>
+            service.observeData(filter())
+                   .componse(doSomething())
+                   .subscribeOn(Schedulers.compute())
+                   .onBackpressureLatest()
+                   .to(RxDiffUtil.with(adapterImpl))
+                   .calculateDiff(callbackFactory())
+                   .applyDiff(AdapterImpl::setItemsUnsafe)
+                   .subscribe(observer())
+          </code></pre>
+        </section>
+
+        <section data-background-color="#5a94d6">
+          <h3>Who I am‽</h3>
+          <p class="fragment" data-fragment-index="1">Christian<span class="fragment" data-fragment-index="2">.</span>Schmitz
+          <p class="fragment" data-fragment-index="2">
+          <a href="https://www.volders.de" style="color:inherit">
+            <small>@volders.de</small>
+          </a>
+          <p><small>
+          <span class="fragment"><a href="https://github.com/tynn" style="color:inherit">
+          <img src="img/github.svg" class="icon"> tynn
+          </a></span>&emsp;&emsp;
+          <span class="fragment"><a href="https://github.com/volders" style="color:inherit">
+          <img src="img/github.svg" class="icon"> volders
+          </a></span></small>
+        </section>
+
+        <section data-background-color="#5a94d6">
+          <h3>Hiring‽</h3>
+          <ul>
+            <li class="fragment">not Android
+            <li class="fragment">but iOS
+            <li class="fragment">and UX
+          </ul>
+          <p class="fragment">
+          <a href="http://berlinstartupjobs.com/companies/volders/" style="color:inherit">
+            <small>berlinstartupjobs.com/companies/volders/</small>
+          </a>
+        </section>
+
+        <section>
+          <h2>Questions‽</h2>
+        </section>
+
+        <section>
+          <h2>Thank you for listening!</h2>
+        </section>
+
+      </div>
+    </div>
+
+    <script src="reveal.js/lib/js/head.min.js"></script>
+    <script src="reveal.js/js/reveal.js"></script>
+
+    <script>
+      // More info https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        history: true,
+
+        // More info https://github.com/hakimel/reveal.js#dependencies
+        dependencies: [
+          { src: 'reveal.js/plugin/markdown/marked.js' },
+          { src: 'reveal.js/plugin/markdown/markdown.js' },
+          { src: 'reveal.js/plugin/notes/notes.js', async: true },
+          { src: 'reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+        ]
+      });
+    </script>
+  </body>
+</html>

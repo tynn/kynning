@@ -1,0 +1,253 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>JitPack - Packaging Git</title>
+
+		<link rel="stylesheet" href="reveal.js/css/reveal.css">
+		<link rel="stylesheet" href="reveal.js/css/theme/black.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="reveal.js/lib/css/zenburn.css">
+
+		<style type="text/css">
+			.reveal .controls {
+				display: none !important;
+			}
+			.reveal .progress, .reveal a {
+				color: #ff790f
+			}
+			.reveal a:hover {
+				color: #ffe4cf
+			}
+		</style>
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'reveal.js/css/print/pdf.css' : 'reveal.js/css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+
+				<section data-markdown>
+					# JitPack
+					## Packaging Git 〽
+					#### 「with J like in Gif」
+				</section>
+
+				<section data-markdown>
+					## JitPack
+					「*Maven* and *Ivy*」
+
+					**Easy to use package repository for Git**
+
+					*Publish your JVM and Android libraries*
+
+					[jitpack.io](https://jitpack.io)
+				</section>
+
+				<section data-markdown>
+					## JitPack
+
+					Supported Project Types
+
+					> _ Gradle - Maven - Sbt - Leiningen _
+
+					*Gradle* is used if a `build.gradle` file was found
+				</section>
+
+				<section data-markdown>
+					## The Basic Setup
+
+					Add the *JitPack* repo
+
+						repositories {
+							maven { url 'https://jitpack.io' }
+						}
+
+					Add the dependency
+
+						dependencies {
+							compile 'com.github.User:Repo:Tag'
+						}
+				</section>
+
+				<section data-markdown>
+					## Supported Version Names
+
+					Depending on a branch
+
+						dependencies {
+							compile 'com.github.User:Repo:Branch-SNAPSHOT'
+						}
+
+					Depending on a commit
+
+						dependencies {
+							compile 'com.github.User:Repo:Commit'
+						}
+				</section>
+
+				<section data-markdown>
+					## Special Repo Names
+
+					*JitPack* cannot handle repository names with `.` well.
+					Use `~` with the dependency instead.
+
+						dependencies {
+							compile 'com.github.User:Repo~Name:Tag'
+						}
+				</section>
+
+				<section data-markdown>
+					## The Modular Repo
+
+					Creates the original artifact with dependencies to all modules
+
+						dependencies {
+							compile 'com.github.User.Repo:Module:Tag'
+						}
+
+					Only works for pure *Java* projects [#1539](https://github.com/jitpack/jitpack.io/issues/1539)
+				</section>
+
+				<section data-markdown>
+					## The Custom Group
+
+					Add DNS TXT record that maps the git subdomain to the Repo
+
+						~$ dig txt git.example.com
+						git.example.com.     600 IN  TXT "https://github.com/example"
+
+					Use the reversed domain as the group
+
+						dependencies {
+							compile 'com.example:Repo:Tag'
+						}
+
+				</section>
+
+				<section data-markdown>
+					## The Outcast Support
+
+					Supporting Bitbucket and GitLab Repos
+
+						dependencies {
+							compile 'org.bitbucket.User:Repo:Tag'
+							compile 'com.gitlab.User:Repo:Tag'
+						}
+				</section>
+
+				<section data-markdown>
+					## The Doc Information
+
+					Linking to the page
+
+						[see on JipPack](https://jitpack.io/#User/Repo)
+
+					Linking to the badge
+
+						![Release](https://jitpack.io/v/User/Repo.svg)
+				</section>
+
+				<section data-markdown>
+					## The Javadoc Provider
+
+					A build *Javadoc* artifact is directly accessible
+
+						https://jitpack.io/com/github/USER/REPO/VERSION/javadoc/
+
+					*The trailing `/` of the path is essential*
+				</section>
+
+				<section data-markdown>
+					## The Build Customization
+
+					Provided by `jitpack.yml` or `.jitpack.yml`
+
+						jdk:
+						  - oraclejdk8
+						before_install:
+						  - gradle -b wrapper.gradle
+						install:
+						  - ./gradlew clean install
+						env:
+						   LOG: "Some evironment information"
+
+					Oracle Java 8 is default
+				</section>
+
+				<section data-markdown>
+					## Managing Builds
+
+					![JitPack](img/jitpack-spa.png)
+				</section>
+
+				<section data-markdown>
+					## Browsing Builds
+
+					Search for packages
+
+						https://jitpack.io/#User/Repo
+
+					See the build log
+
+						https://jitpack.io/com/github/User/Repo/Tag/build.log
+
+					List the artifacts
+
+						https://jitpack.io/com/github/User/Repo/Tag/
+				</section>
+
+				<section data-markdown>
+					## Adding Licenses
+
+					> JitPack uses GitHub API to detect the license and adds it to the pom.
+					> If pom already has a license then it keeps it.
+
+					Happens sometimes, but mostly not [#1744](https://github.com/jitpack/jitpack.io/issues/1744)
+				</section>
+
+				<section data-markdown>
+					## whoami
+
+					Christian Schmitz
+					@Babbel
+
+					[tynn](https://github.com/tynn)
+					@GitHub
+				</section>
+
+				<section data-markdown>
+					# Thank You
+				</section>
+
+			</div>
+		</div>
+
+		<script src="reveal.js/lib/js/head.min.js"></script>
+		<script src="reveal.js/js/reveal.js"></script>
+
+		<script>
+			// More info about config & dependencies:
+			// - https://github.com/hakimel/reveal.js#configuration
+			// - https://github.com/hakimel/reveal.js#dependencies
+			Reveal.initialize({
+				dependencies: [
+					{ src: 'reveal.js/plugin/markdown/marked.js' },
+					{ src: 'reveal.js/plugin/markdown/markdown.js' },
+					{ src: 'reveal.js/plugin/notes/notes.js', async: true },
+					{ src: 'reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+		</script>
+	</body>
+</html>
